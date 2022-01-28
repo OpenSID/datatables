@@ -799,7 +799,7 @@ abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
             $results,
             $this->getColumnsDefinition(),
             $this->templates,
-            $this->request->get_post('start')
+            $this->request->get('start')
         );
 
         return $processor->process($object);
@@ -814,7 +814,7 @@ abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
     protected function render(array $data)
     {
         $output = $this->attachAppends([
-            'draw'            => (int) $this->request->get_post('draw'),
+            'draw'            => (int) $this->request->get('draw'),
             'recordsTotal'    => $this->totalRecords,
             'recordsFiltered' => $this->filteredRecords,
             'data'            => $data,
@@ -852,7 +852,7 @@ abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
      */
     protected function showDebugger(array $output)
     {
-        $output['input'] = $this->request->get_post();
+        $output['input'] = $this->request->get(null);
 
         return $output;
     }
@@ -879,7 +879,7 @@ abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
         return get_instance()->output
             ->set_content_type('application/json', 'utf-8')
             ->set_output(json_encode([
-                'draw'            => (int) $this->request->get_post('draw'),
+                'draw'            => (int) $this->request->get('draw'),
                 'recordsTotal'    => $this->totalRecords,
                 'recordsFiltered' => 0,
                 'data'            => [],

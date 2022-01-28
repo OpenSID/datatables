@@ -40,7 +40,7 @@ class Request
      */
     public function __get($name)
     {
-        return $this->request->get_post($name);
+        return $this->request->get($name);
     }
 
     /**
@@ -50,7 +50,7 @@ class Request
      */
     public function columns()
     {
-        return (array) $this->request->get_post('columns');
+        return (array) $this->request->get('columns');
     }
 
     /**
@@ -60,7 +60,7 @@ class Request
      */
     public function isSearchable()
     {
-        return $this->request->get_post('search[value]') != '';
+        return $this->request->get('search[value]') != '';
     }
 
     /**
@@ -71,7 +71,7 @@ class Request
      */
     public function isRegex($index)
     {
-        return $this->request->get_post("columns[{$index}][search][regex]") === 'true';
+        return $this->request->get("columns[{$index}][search][regex]") === 'true';
     }
 
     /**
@@ -86,9 +86,9 @@ class Request
         }
 
         $orderable = [];
-        for ($i = 0, $c = count($this->request->get_post('order')); $i < $c; $i++) {
-            $order_col = (int) $this->request->get_post("order[{$i}][column]");
-            $order_dir = strtolower($this->request->get_post("order[{$i}][dir]")) === 'asc' ? 'asc' : 'desc';
+        for ($i = 0, $c = count($this->request->get('order')); $i < $c; $i++) {
+            $order_col = (int) $this->request->get("order[{$i}][column]");
+            $order_dir = strtolower($this->request->get("order[{$i}][dir]")) === 'asc' ? 'asc' : 'desc';
             if ($this->isColumnOrderable($order_col)) {
                 $orderable[] = ['column' => $order_col, 'direction' => $order_dir];
             }
@@ -104,7 +104,7 @@ class Request
      */
     public function isOrderable()
     {
-        return $this->request->get_post('order') && count($this->request->get_post('order')) > 0;
+        return $this->request->get('order') && count($this->request->get('order')) > 0;
     }
 
     /**
@@ -115,7 +115,7 @@ class Request
      */
     public function isColumnOrderable($index)
     {
-        return $this->request->get_post("columns[{$index}][orderable]") == 'true';
+        return $this->request->get("columns[{$index}][orderable]") == 'true';
     }
 
     /**
@@ -126,7 +126,7 @@ class Request
     public function searchableColumnIndex()
     {
         $searchable = [];
-        for ($i = 0, $c = count($this->request->get_post('columns')); $i < $c; $i++) {
+        for ($i = 0, $c = count($this->request->get('columns')); $i < $c; $i++) {
             if ($this->isColumnSearchable($i, false)) {
                 $searchable[] = $i;
             }
@@ -147,17 +147,17 @@ class Request
         if ($column_search) {
             return
                 (
-                    $this->request->get_post("columns[{$i}][searchable]") === 'true'
+                    $this->request->get("columns[{$i}][searchable]") === 'true'
                     ||
-                    $this->request->get_post("columns[{$i}[searchable]") === true
+                    $this->request->get("columns[{$i}[searchable]") === true
                 )
                 && $this->columnKeyword($i) != '';
         }
 
         return
-            $this->request->get_post("columns[{$i}][searchable]") === 'true'
+            $this->request->get("columns[{$i}][searchable]") === 'true'
             ||
-            $this->request->get_post("columns[{$i}][searchable]") === true;
+            $this->request->get("columns[{$i}][searchable]") === true;
     }
 
     /**
@@ -168,7 +168,7 @@ class Request
      */
     public function columnKeyword($index)
     {
-        $keyword = $this->request->get_post("columns[{$index}][search][value]") ?? '';
+        $keyword = $this->request->get("columns[{$index}][search][value]") ?? '';
 
         return $this->prepareKeyword($keyword);
     }
@@ -195,7 +195,7 @@ class Request
      */
     public function keyword()
     {
-        $keyword = $this->request->get_post('search[value]') ?? '';
+        $keyword = $this->request->get('search[value]') ?? '';
 
         return $this->prepareKeyword($keyword);
     }
@@ -208,7 +208,7 @@ class Request
      */
     public function columnName($i)
     {
-        $column = $this->request->get_post("columns[{$i}]");
+        $column = $this->request->get("columns[{$i}]");
 
         return isset($column['name']) && $column['name'] != '' ? $column['name'] : $column['data'];
     }
@@ -220,8 +220,8 @@ class Request
      */
     public function isPaginationable()
     {
-        return ! is_null($this->request->get_post('start')) &&
-            ! is_null($this->request->get_post('length')) &&
-            $this->request->get_post('length') != -1;
+        return ! is_null($this->request->get('start')) &&
+            ! is_null($this->request->get('length')) &&
+            $this->request->get('length') != -1;
     }
 }
