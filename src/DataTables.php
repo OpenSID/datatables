@@ -48,6 +48,8 @@ class DataTables
      */
     public static function make($source)
     {
+        get_instance()->load->config('datatables');
+
         $engines  = config_item('engines');
         $builders = config_item('builders');
 
