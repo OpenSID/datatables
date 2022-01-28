@@ -777,7 +777,7 @@ class QueryDataTable extends DataTableAbstract
         });
 
         $output['queries'] = $query_log;
-        $output['input']   = $this->request->all();
+        $output['input']   = $this->request->get_post(null);
 
         return $output;
     }
