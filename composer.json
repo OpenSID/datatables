@@ -49,7 +49,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "codeigniter3-dev"
+      "dev-master": "1.x-dev"
     }
   },
   "config": {
