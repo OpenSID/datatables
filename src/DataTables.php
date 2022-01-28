@@ -1,7 +1,9 @@
 <?php
 
-namespace Yajra\DataTables;
+namespace Fluent\DataTables;
 
+use Fluent\DataTables\Utilities\Config;
+use Fluent\DataTables\Utilities\Request;
 use Illuminate\Support\Traits\Macroable;
 
 class DataTables
@@ -11,14 +13,14 @@ class DataTables
     /**
      * DataTables request object.
      *
-     * @var \Yajra\DataTables\Utilities\Request
+     * @var \Fluent\DataTables\Utilities\Request
      */
     protected $request;
 
     /**
      * HTML builder instance.
      *
-     * @var \Yajra\DataTables\Html\Builder
+     * @var \Fluent\DataTables\Html\Builder
      */
     protected $html;
 
@@ -46,8 +48,8 @@ class DataTables
      */
     public static function make($source)
     {
-        $engines  = config('datatables.engines');
-        $builders = config('datatables.builders');
+        $engines  = config_item('engines');
+        $builders = config_item('builders');
 
         $args = func_get_args();
         foreach ($builders as $class => $engine) {
@@ -68,21 +70,21 @@ class DataTables
     /**
      * Get request object.
      *
-     * @return \Yajra\DataTables\Utilities\Request
+     * @return \Fluent\DataTables\Utilities\Request
      */
     public function getRequest()
     {
-        return app('datatables.request');
+        return new Request();
     }
 
     /**
      * Get config instance.
      *
-     * @return \Yajra\DataTables\Utilities\Config
+     * @return \Fluent\DataTables\Utilities\Config
      */
     public function getConfig()
     {
-        return app('datatables.config');
+        return new Config();
     }
 
     /**
@@ -126,7 +128,7 @@ class DataTables
      */
     public function collection($collection)
     {
-        return CollectionDataTable::create($collection);
+        // return CollectionDataTable::create($collection);
     }
 
     /**
@@ -137,22 +139,22 @@ class DataTables
      */
     public function resource($resource)
     {
-        return ApiResourceDataTable::create($resource);
+        // return ApiResourceDataTable::create($resource);
     }
 
     /**
      * Get html builder instance.
      *
-     * @return \Yajra\DataTables\Html\Builder
+     * @return \Fluent\DataTables\Html\Builder
      *
      * @throws \Exception
      */
     public function getHtmlBuilder()
     {
-        if (! class_exists('\Yajra\DataTables\Html\Builder')) {
-            throw new \Exception('Please install yajra/laravel-datatables-html to be able to use this function.');
-        }
+        // if (! class_exists('\Fluent\DataTables\Html\Builder')) {
+        //     throw new \Exception('Please install yajra/laravel-datatables-html to be able to use this function.');
+        // }
 
-        return $this->html ?: $this->html = app('datatables.html');
+        // return $this->html ?: $this->html = app('datatables.html');
     }
 }

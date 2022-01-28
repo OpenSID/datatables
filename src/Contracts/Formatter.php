@@ -1,6 +1,6 @@
 <?php
 
-namespace Yajra\DataTables\Contracts;
+namespace Fluent\DataTables\Contracts;
 
 interface Formatter
 {

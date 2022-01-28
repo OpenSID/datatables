@@ -1,17 +1,17 @@
 <?php
 
-namespace Yajra\DataTables\Tests\Unit;
+namespace Fluent\DataTables\Tests\Unit;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Yajra\DataTables\Tests\Models\User;
-use Yajra\DataTables\Tests\TestCase;
+use Fluent\DataTables\Tests\Models\User;
+use Fluent\DataTables\Tests\TestCase;
 
 class QueryDataTableTest extends TestCase
 {
     public function test_complex_query_are_wrapped_and_countable()
     {
-        /** @var \Yajra\DataTables\QueryDataTable $dataTable */
+        /** @var \Fluent\DataTables\QueryDataTable $dataTable */
         $dataTable = app('datatables')->of(
             DB::table('module_telers')
                 ->selectRaw('module_telers.id, module_telers.publiceren, module_telers.archief, module_telers.uitgelicht, module_telers.image_header, module_telers.bedrijfsnaam, module_telers.titel, module_telers.plaats, group_concat(DISTINCT productenAlias.titel SEPARATOR \', \') as producten')
@@ -22,7 +22,7 @@ class QueryDataTableTest extends TestCase
 
         $this->assertQueryWrapped(true, $dataTable->prepareCountQuery());
 
-        /** @var \Yajra\DataTables\QueryDataTable $dataTable */
+        /** @var \Fluent\DataTables\QueryDataTable $dataTable */
         $dataTable = app('datatables')->of(
             DB::table('posts')->selectRaw('title AS state')->groupBy('state')->having('state', '!=', 'deleted')
         );
@@ -33,7 +33,7 @@ class QueryDataTableTest extends TestCase
 
     public function test_simple_queries_are_not_wrapped_and_countable()
     {
-        /** @var \Yajra\DataTables\QueryDataTable $dataTable */
+        /** @var \Fluent\DataTables\QueryDataTable $dataTable */
         $dataTable = app('datatables')->of(
             User::with('posts')->select('users.*')
         );

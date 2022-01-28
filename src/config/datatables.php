@@ -1,6 +1,6 @@
 <?php
 
-return [
+$config = [
     /*
      * DataTables search options.
      */
@@ -45,10 +45,8 @@ return [
      * This is where you can register your custom dataTables builder.
      */
     'engines'        => [
-        'eloquent'   => Yajra\DataTables\EloquentDataTable::class,
-        'query'      => Yajra\DataTables\QueryDataTable::class,
-        'collection' => Yajra\DataTables\CollectionDataTable::class,
-        'resource'   => Yajra\DataTables\ApiResourceDataTable::class,
+        'eloquent'   => Fluent\DataTables\EloquentDataTable::class,
+        'query'      => Fluent\DataTables\QueryDataTable::class,
     ],
 
     /*
@@ -73,10 +71,10 @@ return [
      * User friendly message to be displayed on user if error occurs.
      * Possible values:
      * null             - The exception message will be used on error response.
-     * 'throw'          - Throws a \Yajra\DataTables\Exceptions\Exception. Use your custom error handler if needed.
+     * 'throw'          - Throws a \Fluent\DataTables\Exceptions\Exception. Use your custom error handler if needed.
      * 'custom message' - Any friendly message to be displayed to the user. You can also use translation key.
      */
-    'error'          => env('DATATABLES_ERROR', null),
+    'error'          => null,
 
     /*
      * Default columns definition of dataTable utility functions.
@@ -114,7 +112,7 @@ return [
     /*
      * JsonResponse header and options config.
      */
-    'json'           => [
+    'json' => [
         'header'  => [],
         'options' => 0,
     ],

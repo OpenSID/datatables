@@ -1,11 +1,11 @@
 <?php
 
-namespace Yajra\DataTables\Processors;
+namespace Fluent\DataTables\Processors;
 
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Arr;
-use Yajra\DataTables\Contracts\Formatter;
-use Yajra\DataTables\Utilities\Helper;
+use Fluent\DataTables\Contracts\Formatter;
+use Fluent\DataTables\Utilities\Helper;
 
 class DataProcessor
 {

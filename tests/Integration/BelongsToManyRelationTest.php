@@ -1,11 +1,11 @@
 <?php
 
-namespace Yajra\DataTables\Tests\Integration;
+namespace Fluent\DataTables\Tests\Integration;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Yajra\DataTables\DataTables;
-use Yajra\DataTables\Tests\Models\User;
-use Yajra\DataTables\Tests\TestCase;
+use Fluent\DataTables\DataTables;
+use Fluent\DataTables\Tests\Models\User;
+use Fluent\DataTables\Tests\TestCase;
 
 class BelongsToManyRelationTest extends TestCase
 {

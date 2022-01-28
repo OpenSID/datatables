@@ -1,12 +1,14 @@
 <?php
 
-namespace Yajra\DataTables;
+namespace Fluent\DataTables;
 
+use Fluent\DataTables\Utilities\Config;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Str;
-use Yajra\DataTables\Utilities\Helper;
+use Fluent\DataTables\Utilities\Helper;
+use Fluent\DataTables\Utilities\Request;
 
 class QueryDataTable extends DataTableAbstract
 {
@@ -76,8 +78,8 @@ class QueryDataTable extends DataTableAbstract
     public function __construct(Builder $builder)
     {
         $this->query      = $builder;
-        $this->request    = app('datatables.request');
-        $this->config     = app('datatables.config');
+        $this->request    = new Request();
+        $this->config     = new Config();
         $this->columns    = $builder->columns;
         $this->connection = $builder->getConnection();
         if ($this->config->isDebugging()) {

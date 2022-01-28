@@ -1,9 +1,9 @@
 <?php
 
-namespace Yajra\DataTables\Processors;
+namespace Fluent\DataTables\Processors;
 
 use Illuminate\Support\Arr;
-use Yajra\DataTables\Utilities\Helper;
+use Fluent\DataTables\Utilities\Helper;
 
 class RowProcessor
 {

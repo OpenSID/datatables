@@ -1,24 +1,18 @@
 <?php
 
-namespace Yajra\DataTables\Utilities;
-
-use Illuminate\Contracts\Config\Repository;
+namespace Fluent\DataTables\Utilities;
 
 class Config
 {
     /**
-     * @var \Illuminate\Contracts\Config\Repository
+     * @var CI_Controller
      */
-    private $repository;
+    private $ci;
 
-    /**
-     * Config constructor.
-     *
-     * @param  \Illuminate\Contracts\Config\Repository  $repository
-     */
-    public function __construct(Repository $repository)
+    public function __construct()
     {
-        $this->repository = $repository;
+        $this->ci = get_instance();
+        $this->ci->load->config('datatables');
     }
 
     /**
@@ -28,7 +22,7 @@ class Config
      */
     public function isWildcard()
     {
-        return $this->repository->get('datatables.search.use_wildcards', false);
+        return $this->ci->config->item('search')['use_wildcards'];
     }
 
     /**
@@ -38,7 +32,7 @@ class Config
      */
     public function isSmartSearch()
     {
-        return $this->repository->get('datatables.search.smart', true);
+        return $this->ci->config->item('search')['smart'];
     }
 
     /**
@@ -48,7 +42,7 @@ class Config
      */
     public function isCaseInsensitive()
     {
-        return $this->repository->get('datatables.search.case_insensitive', false);
+        return $this->ci->config->item('search')['case_insensitive'];
     }
 
     /**
@@ -58,7 +52,9 @@ class Config
      */
     public function isDebugging()
     {
-        return $this->repository->get('app.debug', false);
+        return ENVIRONMENT === 'development'
+            ? true
+            : false;
     }
 
     /**
@@ -70,7 +66,7 @@ class Config
      */
     public function get($key, $default = null)
     {
-        return $this->repository->get($key, $default);
+        return $this->ci->config->item($key) ?? $default;
     }
 
     /**
@@ -82,7 +78,7 @@ class Config
      */
     public function set($key, $value = null)
     {
-        $this->repository->set($key, $value);
+        $this->ci->config->set_item($key, $value);
     }
 
     /**
@@ -92,7 +88,7 @@ class Config
      */
     public function isMultiTerm()
     {
-        return $this->repository->get('datatables.search.multi_term', true);
+        return $this->ci->config->item('search')['multi_term'];
     }
 
     /**
@@ -102,6 +98,6 @@ class Config
      */
     public function isStartsWithSearch()
     {
-        return $this->repository->get('datatables.search.starts_with', false);
+        return $this->ci->config->item('search')['starts_with'];
     }
 }

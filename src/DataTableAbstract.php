@@ -1,19 +1,17 @@
 <?php
 
-namespace Yajra\DataTables;
+namespace Fluent\DataTables;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
-use Psr\Log\LoggerInterface;
-use Yajra\DataTables\Contracts\DataTable;
-use Yajra\DataTables\Contracts\Formatter;
-use Yajra\DataTables\Exceptions\Exception;
-use Yajra\DataTables\Processors\DataProcessor;
-use Yajra\DataTables\Utilities\Helper;
+use Fluent\DataTables\Contracts\DataTable;
+use Fluent\DataTables\Contracts\Formatter;
+use Fluent\DataTables\Exceptions\Exception;
+use Fluent\DataTables\Processors\DataProcessor;
+use Fluent\DataTables\Utilities\Helper;
 
 /**
  * @method DataTableAbstract setTransformer($transformer)
@@ -31,7 +29,7 @@ abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
     /**
      * DataTables Request object.
      *
-     * @var \Yajra\DataTables\Utilities\Request
+     * @var \Fluent\DataTables\Utilities\Request
      */
     public $request;
 
@@ -139,7 +137,7 @@ abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
     protected $appends = [];
 
     /**
-     * @var \Yajra\DataTables\Utilities\Config
+     * @var \Fluent\DataTables\Utilities\Config
      */
     protected $config;
 
@@ -194,7 +192,7 @@ abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
 
     /**
      * @param  string|array  $columns
-     * @param  mixed|\Yajra\DataTables\Contracts\Formatter  $formatter
+     * @param  mixed|\Fluent\DataTables\Contracts\Formatter  $formatter
      * @return $this
      *
      * @throws \Exception
@@ -318,7 +316,7 @@ abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
     public function rawColumns(array $columns, $merge = false)
     {
         if ($merge) {
-            $config = $this->config->get('datatables.columns');
+            $config = $this->config->get('columns');
 
             $this->columnDef['raw'] = array_merge($config['raw'], $columns);
         } else {
@@ -492,7 +490,7 @@ abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
      */
     public function smart($state = true)
     {
-        $this->config->set('datatables.search.smart', $state);
+        $this->config->set("search[smart]", $state);
 
         return $this;
     }
@@ -505,7 +503,7 @@ abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
      */
     public function startsWithSearch($state = true)
     {
-        $this->config->set('datatables.search.starts_with', $state);
+        $this->config->set("search[starts_with]", $state);
 
         return $this;
     }
@@ -518,7 +516,7 @@ abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
      */
     public function setMultiTerm($multiTerm = true)
     {
-        $this->config->set('datatables.search.multi_term', $multiTerm);
+        $this->config->set("search[multi_term]", $multiTerm);
 
         return $this;
     }
@@ -604,7 +602,7 @@ abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
      */
     protected function getColumnsDefinition()
     {
-        $config  = $this->config->get('datatables.columns');
+        $config  = $this->config->get('columns');
         $allowed = ['excess', 'escape', 'raw', 'blacklist', 'whitelist'];
 
         return array_replace_recursive(Arr::only($config, $allowed), $this->columnDef);
@@ -670,7 +668,7 @@ abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
     public function toJson($options = 0)
     {
         if ($options) {
-            $this->config->set('datatables.json.options', $options);
+            $this->config->set("json[options]", $options);
         }
 
         return $this->make();
@@ -830,12 +828,10 @@ abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
             $output['searchPanes']['options'][$column] = $searchPane['options'];
         }
 
-        return new JsonResponse(
-            $output,
-            200,
-            $this->config->get('datatables.json.header', []),
-            $this->config->get('datatables.json.options', 0)
-        );
+        return get_instance()->output
+            ->set_content_type('application/json', 'utf-8')
+            ->set_output(json_encode($output))
+            ->_display();
     }
 
     /**
@@ -857,7 +853,7 @@ abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
      */
     protected function showDebugger(array $output)
     {
-        $output['input'] = $this->request->all();
+        $output['input'] = $this->request->get_post();
 
         return $output;
     }
@@ -868,51 +864,29 @@ abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
      * @param  \Exception  $exception
      * @return \Illuminate\Http\JsonResponse
      *
-     * @throws \Yajra\DataTables\Exceptions\Exception
+     * @throws \Fluent\DataTables\Exceptions\Exception
      */
     protected function errorResponse(\Exception $exception)
     {
-        $error = $this->config->get('datatables.error');
-        $debug = $this->config->get('app.debug');
+        $error = $this->config->get('error');
+        $debug = $this->config->isDebugging();
 
         if ($error === 'throw' || (! $error && ! $debug)) {
             throw $exception;
         }
 
-        $this->getLogger()->error($exception);
+        log_message('error', $exception);
 
-        return new JsonResponse([
-            'draw'            => (int) $this->request->input('draw'),
-            'recordsTotal'    => $this->totalRecords,
-            'recordsFiltered' => 0,
-            'data'            => [],
-            'error'           => $error ? __($error) : "Exception Message:\n\n".$exception->getMessage(),
-        ]);
-    }
-
-    /**
-     * Get monolog/logger instance.
-     *
-     * @return \Psr\Log\LoggerInterface
-     */
-    public function getLogger()
-    {
-        $this->logger = $this->logger ?: app(LoggerInterface::class);
-
-        return $this->logger;
-    }
-
-    /**
-     * Set monolog/logger instance.
-     *
-     * @param  \Psr\Log\LoggerInterface  $logger
-     * @return $this
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-
-        return $this;
+        return get_instance()->output
+            ->set_content_type('application/json', 'utf-8')
+            ->set_output(json_encode([
+                'draw'            => (int) $this->request->get_post('draw'),
+                'recordsTotal'    => $this->totalRecords,
+                'recordsFiltered' => 0,
+                'data'            => [],
+                'error'           => $error ? __($error) : "Exception Message:\n\n".$exception->getMessage(),
+            ]))
+            ->_display();
     }
 
     /**

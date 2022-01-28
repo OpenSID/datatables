@@ -76,18 +76,18 @@ Register provider and facade on your `config/app.php` file.
 ```php
 'providers' => [
     ...,
-    Yajra\DataTables\DataTablesServiceProvider::class,
+    Fluent\DataTables\DataTablesServiceProvider::class,
 ]
 
 'aliases' => [
     ...,
-    'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+    'DataTables' => Fluent\DataTables\Facades\DataTables::class,
 ]
 ```
 
 #### Configuration (Optional)
 ```bash
-$ php artisan vendor:publish --provider="Yajra\DataTables\DataTablesServiceProvider"
+$ php artisan vendor:publish --provider="Fluent\DataTables\DataTablesServiceProvider"
 ```
 
 And that's it! Start building out some awesome DataTables!

@@ -1,6 +1,6 @@
 <?php
 
-namespace Yajra\DataTables\Tests\Http\Resources;
+namespace Fluent\DataTables\Tests\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 

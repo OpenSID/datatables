@@ -1,6 +1,6 @@
 <?php
 
-namespace Yajra\DataTables\Utilities;
+namespace Fluent\DataTables\Utilities;
 
 use DateTime;
 use Illuminate\Contracts\Support\Arrayable;

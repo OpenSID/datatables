@@ -1,9 +1,9 @@
 <?php
 
-namespace Yajra\DataTables\Tests\Unit;
+namespace Fluent\DataTables\Tests\Unit;
 
-use Yajra\DataTables\Tests\TestCase;
-use Yajra\DataTables\Utilities\Request;
+use Fluent\DataTables\Tests\TestCase;
+use Fluent\DataTables\Utilities\Request;
 
 class RequestTest extends TestCase
 {
@@ -143,7 +143,7 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @return \Yajra\DataTables\Utilities\Request
+     * @return \Fluent\DataTables\Utilities\Request
      */
     protected function getRequest()
     {

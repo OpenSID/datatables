@@ -1,6 +1,6 @@
 <?php
 
-namespace Yajra\DataTables;
+namespace Fluent\DataTables;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Yajra\DataTables\Exceptions\Exception;
+use Fluent\DataTables\Exceptions\Exception;
 
 class EloquentDataTable extends QueryDataTable
 {
@@ -161,7 +161,7 @@ class EloquentDataTable extends QueryDataTable
      * @param  string  $relationColumn
      * @return string
      *
-     * @throws \Yajra\DataTables\Exceptions\Exception
+     * @throws \Fluent\DataTables\Exceptions\Exception
      */
     protected function joinEagerLoadedColumn($relation, $relationColumn)
     {

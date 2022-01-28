@@ -1,17 +1,17 @@
 <?php
 
-namespace Yajra\DataTables\Facades;
+namespace Fluent\DataTables\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @mixin \Yajra\DataTables\DataTables
+ * @mixin \Fluent\DataTables\DataTables
  *
- * @method static \Yajra\DataTables\EloquentDatatable eloquent($builder)
- * @method static \Yajra\DataTables\QueryDataTable query($builder)
- * @method static \Yajra\DataTables\CollectionDataTable collection($collection)
+ * @method static \Fluent\DataTables\EloquentDatatable eloquent($builder)
+ * @method static \Fluent\DataTables\QueryDataTable query($builder)
+ * @method static \Fluent\DataTables\CollectionDataTable collection($collection)
  *
- * @see \Yajra\DataTables\DataTables
+ * @see \Fluent\DataTables\DataTables
  */
 class DataTables extends Facade
 {

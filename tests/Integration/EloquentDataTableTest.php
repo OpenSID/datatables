@@ -1,15 +1,15 @@
 <?php
 
-namespace Yajra\DataTables\Tests\Integration;
+namespace Fluent\DataTables\Tests\Integration;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\JsonResponse;
-use Yajra\DataTables\DataTables;
-use Yajra\DataTables\EloquentDataTable;
-use Yajra\DataTables\Facades\DataTables as DatatablesFacade;
-use Yajra\DataTables\Tests\Models\Post;
-use Yajra\DataTables\Tests\Models\User;
-use Yajra\DataTables\Tests\TestCase;
+use Fluent\DataTables\DataTables;
+use Fluent\DataTables\EloquentDataTable;
+use Fluent\DataTables\Facades\DataTables as DatatablesFacade;
+use Fluent\DataTables\Tests\Models\Post;
+use Fluent\DataTables\Tests\Models\User;
+use Fluent\DataTables\Tests\TestCase;
 
 class EloquentDataTableTest extends TestCase
 {

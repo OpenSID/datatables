@@ -1,12 +1,12 @@
 <?php
 
-namespace Yajra\DataTables\Tests\Integration;
+namespace Fluent\DataTables\Tests\Integration;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Yajra\DataTables\DataTables;
-use Yajra\DataTables\Tests\Models\Heart;
-use Yajra\DataTables\Tests\Models\Post;
-use Yajra\DataTables\Tests\TestCase;
+use Fluent\DataTables\DataTables;
+use Fluent\DataTables\Tests\Models\Heart;
+use Fluent\DataTables\Tests\Models\Post;
+use Fluent\DataTables\Tests\TestCase;
 
 class HasOneThroughTest extends TestCase
 {
