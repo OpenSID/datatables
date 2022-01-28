@@ -29,9 +29,7 @@ class Request
      */
     public function __call($name, $arguments)
     {
-        if (method_exists($this->request, $name)) {
-            return call_user_func_array([$this->request, $name], $arguments);
-        }
+        return $this->request->{$name}(...$arguments);
     }
 
     /**

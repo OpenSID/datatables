@@ -621,12 +621,12 @@ class QueryDataTable extends DataTableAbstract
      */
     public function paging()
     {
-        $limit = (int) $this->request->input('length') > 0 ? $this->request->input('length') : 10;
+        $limit = (int) $this->request->get_post('length') > 0 ? $this->request->get_post('length') : 10;
         if (is_callable($this->limitCallback)) {
             $this->query->limit($limit);
             call_user_func_array($this->limitCallback, [$this->query]);
         } else {
-            $this->query->skip($this->request->input('start'))->take($limit);
+            $this->query->skip($this->request->get_post('start'))->take($limit);
         }
     }
 
