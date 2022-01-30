@@ -774,7 +774,7 @@ abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
         //     );
         // }
 
-        // return Helper::transform($processed);
+        return Helper::transform($processed);
     }
 
     /**
