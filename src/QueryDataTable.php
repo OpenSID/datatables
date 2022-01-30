@@ -91,7 +91,7 @@ class QueryDataTable extends DataTableAbstract
      * Organizes works.
      *
      * @param  bool  $mDataSupport
-     * @return \Illuminate\Http\JsonResponse
+     * @return mixed
      *
      * @throws \Exception
      */
@@ -725,7 +725,7 @@ class QueryDataTable extends DataTableAbstract
      */
     protected function getNullsLastSql($column, $direction)
     {
-        $sql = $this->config->get('datatables.nulls_last_sql', '%s %s NULLS LAST');
+        $sql = $this->config->get('nulls_last_sql');
 
         return str_replace(
             [':column', ':direction'],

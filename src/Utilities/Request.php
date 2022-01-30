@@ -2,13 +2,10 @@
 
 namespace Fluent\DataTables\Utilities;
 
-/**
- * @mixin \Illuminate\Http\Request
- */
 class Request
 {
     /**
-     * @var \Illuminate\Http\Request
+     * @var CI_Input
      */
     protected $request;
 

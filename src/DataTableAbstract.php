@@ -13,15 +13,6 @@ use Fluent\DataTables\Exceptions\Exception;
 use Fluent\DataTables\Processors\DataProcessor;
 use Fluent\DataTables\Utilities\Helper;
 
-/**
- * @method DataTableAbstract setTransformer($transformer)
- * @method DataTableAbstract setSerializer($transformer)
- *
- * @property mixed transformer
- * @property mixed serializer
- *
- * @see     https://github.com/yajra/laravel-datatables-fractal for transformer related methods.
- */
 abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
 {
     use Macroable;
@@ -200,7 +191,7 @@ abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
     public function formatColumn($columns, $formatter)
     {
         if (is_string($formatter) && class_exists($formatter)) {
-            $formatter = app($formatter);
+            $formatter = new $formatter();
         }
 
         if (! $formatter instanceof Formatter) {
@@ -775,15 +766,15 @@ abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
      */
     protected function transform($results, $processed)
     {
-        if (isset($this->transformer) && class_exists('Yajra\\DataTables\\Transformers\\FractalTransformer')) {
-            return app('datatables.transformer')->transform(
-                $results,
-                $this->transformer,
-                $this->serializer ?? null
-            );
-        }
+        // if (isset($this->transformer) && class_exists('Yajra\\DataTables\\Transformers\\FractalTransformer')) {
+        //     return app('datatables.transformer')->transform(
+        //         $results,
+        //         $this->transformer,
+        //         $this->serializer ?? null
+        //     );
+        // }
 
-        return Helper::transform($processed);
+        // return Helper::transform($processed);
     }
 
     /**
@@ -809,7 +800,7 @@ abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
      * Render json response.
      *
      * @param  array  $data
-     * @return \Illuminate\Http\JsonResponse
+     * @return mixed
      */
     protected function render(array $data)
     {
@@ -830,7 +821,7 @@ abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
 
         return get_instance()->output
             ->set_content_type('application/json', 'utf-8')
-            ->set_output(json_encode($output));
+            ->set_output(json_encode($output, $this->config->isDebugging() ? JSON_PRETTY_PRINT : 0));
     }
 
     /**
@@ -861,7 +852,7 @@ abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
      * Return an error json response.
      *
      * @param  \Exception  $exception
-     * @return \Illuminate\Http\JsonResponse
+     * @return mixed
      *
      * @throws \Fluent\DataTables\Exceptions\Exception
      */
@@ -883,9 +874,8 @@ abstract class DataTableAbstract implements DataTable, Arrayable, Jsonable
                 'recordsTotal'    => $this->totalRecords,
                 'recordsFiltered' => 0,
                 'data'            => [],
-                'error'           => $error ? __($error) : "Exception Message:\n\n".$exception->getMessage(),
-            ]))
-            ->_display();
+                'error'           => "Exception Message:\n\n".$exception->getMessage(),
+            ], JSON_PRETTY_PRINT));
     }
 
     /**
